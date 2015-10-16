@@ -202,8 +202,8 @@ public class AltaUsuario extends javax.swing.JFrame {
     }//GEN-LAST:event_btnAceptarActionPerformed
 
     private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
-        //MenuPrincipal mp = new MenuPrincipal();
-       // mp.setVisible(true);
+        MenuPrincipal mp = new MenuPrincipal();
+        mp.setVisible(true);
         this.dispose();
         // TODO add your handling code here:
     }//GEN-LAST:event_btnCancelarActionPerformed

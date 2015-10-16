@@ -359,7 +359,7 @@ public class AltaTitular extends javax.swing.JFrame {
         String nroCalle = txtNumeroCalle.getText();
         String piso = txtPiso.getText();
         
-        gestorTitular.darAltaTitular(nombre, apellido, fecha, nroDoc, calle, dpto, nroCalle, piso, cmbClaseSolicitada.getSelectedIndex(), cmbDonante.getSelectedIndex(), cmbFactorRH.getSelectedIndex(), cmbGrupoSanguineo.getSelectedIndex(), cmbTipoDocumento.getSelectedIndex());
+        gestorTitular.darAltaTitular(nombre, apellido, fecha, nroDoc, calle, dpto, nroCalle, piso,(String) cmbClaseSolicitada.getSelectedItem(),(String) cmbDonante.getSelectedItem(),(String) cmbFactorRH.getSelectedItem(),(String) cmbGrupoSanguineo.getSelectedItem(),(String) cmbTipoDocumento.getSelectedItem());
           
 // TODO add your handling code here:
     }//GEN-LAST:event_btnAceptarActionPerformed
