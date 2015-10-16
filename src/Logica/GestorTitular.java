@@ -88,7 +88,7 @@ public class GestorTitular {
         titular.setFactorRHFK(nomDP.getFactorRH(cmbFactorRH));
         titular.setGrupoSanguineoFK(nomDP.getGrupoSanguineo(cmbGrupoSanguineo));
         titular.setTipoDocumentoFK(nomDP.getTipoDocumento(cmbTipoDocumento));
-        titular.setClaseSolicitada(nomDP.getClase(cmbTipoDocumento));
+        titular.setClaseSolicitada(nomDP.getClase(cmbClaseSolicitada));
         
 //Aca guarda la direccion al dar aceptar
        try {
