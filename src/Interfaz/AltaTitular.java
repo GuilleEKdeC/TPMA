@@ -127,6 +127,11 @@ public class AltaTitular extends javax.swing.JFrame {
         cmbDonante.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "SÍ", "NO" }));
 
         btnCancelar.setText("Cancelar");
+        btnCancelar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCancelarActionPerformed(evt);
+            }
+        });
 
         btnAceptar.setText("Aceptar");
         btnAceptar.addActionListener(new java.awt.event.ActionListener() {
@@ -356,10 +361,15 @@ public class AltaTitular extends javax.swing.JFrame {
         String nroCalle = txtNumeroCalle.getText();
         String piso = txtPiso.getText();
         
-        gestorTitular.darAltaTitular(nombre, apellido, fecha, nroDoc, calle, dpto, nroCalle, piso,(String) cmbClaseSolicitada.getSelectedItem(),(String) cmbDonante.getSelectedItem(),(String) cmbFactorRH.getSelectedItem(),(String) cmbGrupoSanguineo.getSelectedItem(),(String) cmbTipoDocumento.getSelectedItem());
+        gestorTitular.darAltaTitular(nombre, apellido, fecha, nroDoc, calle, dpto, nroCalle, piso,(String) cmbClaseSolicitada.getSelectedItem(), cmbDonante.getSelectedIndex(),(String) cmbFactorRH.getSelectedItem(),(String) cmbGrupoSanguineo.getSelectedItem(),(String) cmbTipoDocumento.getSelectedItem());
           
-// TODO add your handling code here:
     }//GEN-LAST:event_btnAceptarActionPerformed
+
+    private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
+        MenuPrincipal mp = new MenuPrincipal();
+        mp.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_btnCancelarActionPerformed
 
     /**
      * @param args the command line arguments

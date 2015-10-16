@@ -54,7 +54,7 @@ public class GestorTitular {
         return valor;
     }
     
-    public boolean darAltaTitular(String nombre, String apellido, Date fecha, String nroDoc, String calle,String dpto, String nroCalle, String piso, String cmbClaseSolicitada, String cmbDonante, String cmbFactorRH, String cmbGrupoSanguineo,String cmbTipoDocumento){
+    public boolean darAltaTitular(String nombre, String apellido, Date fecha, String nroDoc, String calle,String dpto, String nroCalle, String piso, String cmbClaseSolicitada, int cmbDonante, String cmbFactorRH, String cmbGrupoSanguineo,String cmbTipoDocumento){
     
         TitularJpaController t = new TitularJpaController(EntityMan.getInstance());
         Titular titular = new Titular();
@@ -69,21 +69,18 @@ public class GestorTitular {
         Factorrh factorRH = new Factorrh();
         ClaseJpaController cs = new ClaseJpaController(EntityMan.getInstance());
         Clase claseSol = new Clase();
+        
         direccion.setCalle(calle);
         direccion.setDepartamento(dpto);
         direccion.setNumero(Integer.parseInt(nroCalle));
         direccion.setPiso(Integer.parseInt(piso));
-        try{
-            d.create(direccion);
-        }
-        catch (Exception ex) {
-        }
+        
         titular.setNombre(nombre);
         titular.setApellido(apellido);
         titular.setFechaNacimiento(fecha);
         titular.setNroDocumento(Integer.parseInt(nroDoc));
         titular.setClaseSolicitada(claseSol);
-        titular.setDonante(true/*obtenerValorDonante(cmbDonante)*/);
+        titular.setDonante(isDonante(cmbDonante));
         titular.setDireccionFK(direccion);
         titular.setFactorRHFK(nomDP.getFactorRH(cmbFactorRH));
         titular.setGrupoSanguineoFK(nomDP.getGrupoSanguineo(cmbGrupoSanguineo));
@@ -92,8 +89,9 @@ public class GestorTitular {
         
 //Aca guarda la direccion al dar aceptar
        try {
-            t.create(titular);
-            JOptionPane.showMessageDialog(null, "Se agregó correctamente el titular");
+           d.create(direccion); 
+           t.create(titular);
+           JOptionPane.showMessageDialog(null, "Se agregó correctamente el titular");
        }
        catch (Exception ex) {
             Logger.getLogger(AltaUsuario.class.getName()).log(Level.SEVERE, null, ex);
@@ -102,5 +100,13 @@ public class GestorTitular {
        return true;
     }
     
+    public boolean isDonante(int valor){
+    
+        if(valor==0){
+        return true;
+        }
+        else 
+            return false;
+    }
    
 }
