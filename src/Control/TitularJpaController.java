@@ -6,20 +6,18 @@
 
 package Control;
 
-import Control.exceptions.IllegalOrphanException;
 import Control.exceptions.NonexistentEntityException;
 import java.io.Serializable;
 import javax.persistence.Query;
 import javax.persistence.EntityNotFoundException;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
+import Entity.Tipodocumento;
 import Entity.Direccion;
 import Entity.Factorrh;
 import Entity.Gruposanguineo;
-import Entity.Tipodocumento;
-import Entity.Licencia;
+import Entity.Clase;
 import Entity.Titular;
-import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -40,13 +38,15 @@ public class TitularJpaController implements Serializable {
     }
 
     public void create(Titular titular) {
-        if (titular.getLicenciaList() == null) {
-            titular.setLicenciaList(new ArrayList<Licencia>());
-        }
         EntityManager em = null;
         try {
             em = getEntityManager();
             em.getTransaction().begin();
+            Tipodocumento tipoDocumentoFK = titular.getTipoDocumentoFK();
+            if (tipoDocumentoFK != null) {
+                tipoDocumentoFK = em.getReference(tipoDocumentoFK.getClass(), tipoDocumentoFK.getIdTipoDocumento());
+                titular.setTipoDocumentoFK(tipoDocumentoFK);
+            }
             Direccion direccionFK = titular.getDireccionFK();
             if (direccionFK != null) {
                 direccionFK = em.getReference(direccionFK.getClass(), direccionFK.getIdDireccion());
@@ -62,18 +62,16 @@ public class TitularJpaController implements Serializable {
                 grupoSanguineoFK = em.getReference(grupoSanguineoFK.getClass(), grupoSanguineoFK.getIdGrupo());
                 titular.setGrupoSanguineoFK(grupoSanguineoFK);
             }
-            Tipodocumento tipoDocumentoFK = titular.getTipoDocumentoFK();
-            if (tipoDocumentoFK != null) {
-                tipoDocumentoFK = em.getReference(tipoDocumentoFK.getClass(), tipoDocumentoFK.getIdTipoDocumento());
-                titular.setTipoDocumentoFK(tipoDocumentoFK);
+            Clase claseSolicitada = titular.getClaseSolicitada();
+            if (claseSolicitada != null) {
+                claseSolicitada = em.getReference(claseSolicitada.getClass(), claseSolicitada.getIdClaseSolicitada());
+                titular.setClaseSolicitada(claseSolicitada);
             }
-            List<Licencia> attachedLicenciaList = new ArrayList<Licencia>();
-            for (Licencia licenciaListLicenciaToAttach : titular.getLicenciaList()) {
-                licenciaListLicenciaToAttach = em.getReference(licenciaListLicenciaToAttach.getClass(), licenciaListLicenciaToAttach.getIdLicencia());
-                attachedLicenciaList.add(licenciaListLicenciaToAttach);
-            }
-            titular.setLicenciaList(attachedLicenciaList);
             em.persist(titular);
+            if (tipoDocumentoFK != null) {
+                tipoDocumentoFK.getTitularList().add(titular);
+                tipoDocumentoFK = em.merge(tipoDocumentoFK);
+            }
             if (direccionFK != null) {
                 direccionFK.getTitularList().add(titular);
                 direccionFK = em.merge(direccionFK);
@@ -86,18 +84,9 @@ public class TitularJpaController implements Serializable {
                 grupoSanguineoFK.getTitularList().add(titular);
                 grupoSanguineoFK = em.merge(grupoSanguineoFK);
             }
-            if (tipoDocumentoFK != null) {
-                tipoDocumentoFK.getTitularList().add(titular);
-                tipoDocumentoFK = em.merge(tipoDocumentoFK);
-            }
-            for (Licencia licenciaListLicencia : titular.getLicenciaList()) {
-                Titular oldIdtitularFKOfLicenciaListLicencia = licenciaListLicencia.getIdtitularFK();
-                licenciaListLicencia.setIdtitularFK(titular);
-                licenciaListLicencia = em.merge(licenciaListLicencia);
-                if (oldIdtitularFKOfLicenciaListLicencia != null) {
-                    oldIdtitularFKOfLicenciaListLicencia.getLicenciaList().remove(licenciaListLicencia);
-                    oldIdtitularFKOfLicenciaListLicencia = em.merge(oldIdtitularFKOfLicenciaListLicencia);
-                }
+            if (claseSolicitada != null) {
+                claseSolicitada.getTitularList().add(titular);
+                claseSolicitada = em.merge(claseSolicitada);
             }
             em.getTransaction().commit();
         } finally {
@@ -107,33 +96,25 @@ public class TitularJpaController implements Serializable {
         }
     }
 
-    public void edit(Titular titular) throws IllegalOrphanException, NonexistentEntityException, Exception {
+    public void edit(Titular titular) throws NonexistentEntityException, Exception {
         EntityManager em = null;
         try {
             em = getEntityManager();
             em.getTransaction().begin();
             Titular persistentTitular = em.find(Titular.class, titular.getIdTitular());
+            Tipodocumento tipoDocumentoFKOld = persistentTitular.getTipoDocumentoFK();
+            Tipodocumento tipoDocumentoFKNew = titular.getTipoDocumentoFK();
             Direccion direccionFKOld = persistentTitular.getDireccionFK();
             Direccion direccionFKNew = titular.getDireccionFK();
             Factorrh factorRHFKOld = persistentTitular.getFactorRHFK();
             Factorrh factorRHFKNew = titular.getFactorRHFK();
             Gruposanguineo grupoSanguineoFKOld = persistentTitular.getGrupoSanguineoFK();
             Gruposanguineo grupoSanguineoFKNew = titular.getGrupoSanguineoFK();
-            Tipodocumento tipoDocumentoFKOld = persistentTitular.getTipoDocumentoFK();
-            Tipodocumento tipoDocumentoFKNew = titular.getTipoDocumentoFK();
-            List<Licencia> licenciaListOld = persistentTitular.getLicenciaList();
-            List<Licencia> licenciaListNew = titular.getLicenciaList();
-            List<String> illegalOrphanMessages = null;
-            for (Licencia licenciaListOldLicencia : licenciaListOld) {
-                if (!licenciaListNew.contains(licenciaListOldLicencia)) {
-                    if (illegalOrphanMessages == null) {
-                        illegalOrphanMessages = new ArrayList<String>();
-                    }
-                    illegalOrphanMessages.add("You must retain Licencia " + licenciaListOldLicencia + " since its idtitularFK field is not nullable.");
-                }
-            }
-            if (illegalOrphanMessages != null) {
-                throw new IllegalOrphanException(illegalOrphanMessages);
+            Clase claseSolicitadaOld = persistentTitular.getClaseSolicitada();
+            Clase claseSolicitadaNew = titular.getClaseSolicitada();
+            if (tipoDocumentoFKNew != null) {
+                tipoDocumentoFKNew = em.getReference(tipoDocumentoFKNew.getClass(), tipoDocumentoFKNew.getIdTipoDocumento());
+                titular.setTipoDocumentoFK(tipoDocumentoFKNew);
             }
             if (direccionFKNew != null) {
                 direccionFKNew = em.getReference(direccionFKNew.getClass(), direccionFKNew.getIdDireccion());
@@ -147,18 +128,19 @@ public class TitularJpaController implements Serializable {
                 grupoSanguineoFKNew = em.getReference(grupoSanguineoFKNew.getClass(), grupoSanguineoFKNew.getIdGrupo());
                 titular.setGrupoSanguineoFK(grupoSanguineoFKNew);
             }
-            if (tipoDocumentoFKNew != null) {
-                tipoDocumentoFKNew = em.getReference(tipoDocumentoFKNew.getClass(), tipoDocumentoFKNew.getIdTipoDocumento());
-                titular.setTipoDocumentoFK(tipoDocumentoFKNew);
+            if (claseSolicitadaNew != null) {
+                claseSolicitadaNew = em.getReference(claseSolicitadaNew.getClass(), claseSolicitadaNew.getIdClaseSolicitada());
+                titular.setClaseSolicitada(claseSolicitadaNew);
             }
-            List<Licencia> attachedLicenciaListNew = new ArrayList<Licencia>();
-            for (Licencia licenciaListNewLicenciaToAttach : licenciaListNew) {
-                licenciaListNewLicenciaToAttach = em.getReference(licenciaListNewLicenciaToAttach.getClass(), licenciaListNewLicenciaToAttach.getIdLicencia());
-                attachedLicenciaListNew.add(licenciaListNewLicenciaToAttach);
-            }
-            licenciaListNew = attachedLicenciaListNew;
-            titular.setLicenciaList(licenciaListNew);
             titular = em.merge(titular);
+            if (tipoDocumentoFKOld != null && !tipoDocumentoFKOld.equals(tipoDocumentoFKNew)) {
+                tipoDocumentoFKOld.getTitularList().remove(titular);
+                tipoDocumentoFKOld = em.merge(tipoDocumentoFKOld);
+            }
+            if (tipoDocumentoFKNew != null && !tipoDocumentoFKNew.equals(tipoDocumentoFKOld)) {
+                tipoDocumentoFKNew.getTitularList().add(titular);
+                tipoDocumentoFKNew = em.merge(tipoDocumentoFKNew);
+            }
             if (direccionFKOld != null && !direccionFKOld.equals(direccionFKNew)) {
                 direccionFKOld.getTitularList().remove(titular);
                 direccionFKOld = em.merge(direccionFKOld);
@@ -183,24 +165,13 @@ public class TitularJpaController implements Serializable {
                 grupoSanguineoFKNew.getTitularList().add(titular);
                 grupoSanguineoFKNew = em.merge(grupoSanguineoFKNew);
             }
-            if (tipoDocumentoFKOld != null && !tipoDocumentoFKOld.equals(tipoDocumentoFKNew)) {
-                tipoDocumentoFKOld.getTitularList().remove(titular);
-                tipoDocumentoFKOld = em.merge(tipoDocumentoFKOld);
+            if (claseSolicitadaOld != null && !claseSolicitadaOld.equals(claseSolicitadaNew)) {
+                claseSolicitadaOld.getTitularList().remove(titular);
+                claseSolicitadaOld = em.merge(claseSolicitadaOld);
             }
-            if (tipoDocumentoFKNew != null && !tipoDocumentoFKNew.equals(tipoDocumentoFKOld)) {
-                tipoDocumentoFKNew.getTitularList().add(titular);
-                tipoDocumentoFKNew = em.merge(tipoDocumentoFKNew);
-            }
-            for (Licencia licenciaListNewLicencia : licenciaListNew) {
-                if (!licenciaListOld.contains(licenciaListNewLicencia)) {
-                    Titular oldIdtitularFKOfLicenciaListNewLicencia = licenciaListNewLicencia.getIdtitularFK();
-                    licenciaListNewLicencia.setIdtitularFK(titular);
-                    licenciaListNewLicencia = em.merge(licenciaListNewLicencia);
-                    if (oldIdtitularFKOfLicenciaListNewLicencia != null && !oldIdtitularFKOfLicenciaListNewLicencia.equals(titular)) {
-                        oldIdtitularFKOfLicenciaListNewLicencia.getLicenciaList().remove(licenciaListNewLicencia);
-                        oldIdtitularFKOfLicenciaListNewLicencia = em.merge(oldIdtitularFKOfLicenciaListNewLicencia);
-                    }
-                }
+            if (claseSolicitadaNew != null && !claseSolicitadaNew.equals(claseSolicitadaOld)) {
+                claseSolicitadaNew.getTitularList().add(titular);
+                claseSolicitadaNew = em.merge(claseSolicitadaNew);
             }
             em.getTransaction().commit();
         } catch (Exception ex) {
@@ -219,7 +190,7 @@ public class TitularJpaController implements Serializable {
         }
     }
 
-    public void destroy(Integer id) throws IllegalOrphanException, NonexistentEntityException {
+    public void destroy(Integer id) throws NonexistentEntityException {
         EntityManager em = null;
         try {
             em = getEntityManager();
@@ -231,16 +202,10 @@ public class TitularJpaController implements Serializable {
             } catch (EntityNotFoundException enfe) {
                 throw new NonexistentEntityException("The titular with id " + id + " no longer exists.", enfe);
             }
-            List<String> illegalOrphanMessages = null;
-            List<Licencia> licenciaListOrphanCheck = titular.getLicenciaList();
-            for (Licencia licenciaListOrphanCheckLicencia : licenciaListOrphanCheck) {
-                if (illegalOrphanMessages == null) {
-                    illegalOrphanMessages = new ArrayList<String>();
-                }
-                illegalOrphanMessages.add("This Titular (" + titular + ") cannot be destroyed since the Licencia " + licenciaListOrphanCheckLicencia + " in its licenciaList field has a non-nullable idtitularFK field.");
-            }
-            if (illegalOrphanMessages != null) {
-                throw new IllegalOrphanException(illegalOrphanMessages);
+            Tipodocumento tipoDocumentoFK = titular.getTipoDocumentoFK();
+            if (tipoDocumentoFK != null) {
+                tipoDocumentoFK.getTitularList().remove(titular);
+                tipoDocumentoFK = em.merge(tipoDocumentoFK);
             }
             Direccion direccionFK = titular.getDireccionFK();
             if (direccionFK != null) {
@@ -257,10 +222,10 @@ public class TitularJpaController implements Serializable {
                 grupoSanguineoFK.getTitularList().remove(titular);
                 grupoSanguineoFK = em.merge(grupoSanguineoFK);
             }
-            Tipodocumento tipoDocumentoFK = titular.getTipoDocumentoFK();
-            if (tipoDocumentoFK != null) {
-                tipoDocumentoFK.getTitularList().remove(titular);
-                tipoDocumentoFK = em.merge(tipoDocumentoFK);
+            Clase claseSolicitada = titular.getClaseSolicitada();
+            if (claseSolicitada != null) {
+                claseSolicitada.getTitularList().remove(titular);
+                claseSolicitada = em.merge(claseSolicitada);
             }
             em.remove(titular);
             em.getTransaction().commit();

@@ -1,12 +1,14 @@
 //Corresponde a la logica a utilizar para la interfaz "AltaTitular"
 
 package Logica;
+import Control.ClaseJpaController;
 import Control.DireccionJpaController;
 import Control.EntityMan;
 import Control.FactorrhJpaController;
 import Control.GruposanguineoJpaController;
 import Control.TipodocumentoJpaController;
 import Control.TitularJpaController;
+import Entity.Clase;
 import Entity.Direccion;
 import Entity.Factorrh;
 import Entity.Gruposanguineo;
@@ -40,11 +42,11 @@ public class GestorTitular {
         return fecha;
     }
 
-    public String obtenerClaseSolicitada(int selectedIndex) {
+   /* public String obtenerClaseSolicitada(int selectedIndex) {
         String letra="A";
         //ACA VA EL CODIGO QUE COMPARA LOS INDICES CON LAS LETRAS Y DEVUELVE LA CLASE.
         return letra;
-    }
+    }*/
 
     public boolean obtenerValorDonante(Object selectedItem) {
         boolean valor=true;
@@ -65,7 +67,8 @@ public class GestorTitular {
         Gruposanguineo grupoSanguineo = new Gruposanguineo();
         FactorrhJpaController fr = new FactorrhJpaController(EntityMan.getInstance());
         Factorrh factorRH = new Factorrh();
-        
+        ClaseJpaController cs = new ClaseJpaController(EntityMan.getInstance());
+        Clase claseSol = new Clase();
         direccion.setCalle(calle);
         direccion.setDepartamento(dpto);
         direccion.setNumero(Integer.parseInt(nroCalle));
@@ -79,13 +82,14 @@ public class GestorTitular {
         titular.setApellido(apellido);
         titular.setFechaNacimiento(fecha);
         titular.setNroDocumento(Integer.parseInt(nroDoc));
-        titular.setClaseSolicitada("A"/*obtenerClaseSolicitada(cmbClaseSolicitada)*/);
+        titular.setClaseSolicitada(claseSol);
         titular.setDonante(true/*obtenerValorDonante(cmbDonante)*/);
         titular.setDireccionFK(direccion);
         titular.setFactorRHFK(nomDP.getFactorRH(cmbFactorRH));
         titular.setGrupoSanguineoFK(nomDP.getGrupoSanguineo(cmbGrupoSanguineo));
         titular.setTipoDocumentoFK(nomDP.getTipoDocumento(cmbTipoDocumento));
-
+        titular.setClaseSolicitada(nomDP.getClase(cmbTipoDocumento));
+        
 //Aca guarda la direccion al dar aceptar
        try {
             t.create(titular);

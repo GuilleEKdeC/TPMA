@@ -9,6 +9,7 @@
     <class>Entity.Direccion</class>
     <class>Entity.Gruposanguineo</class>
     <class>Entity.Tipodocumento</class>
+    <class>Entity.Clase</class>
     <properties>
       <property name="javax.persistence.jdbc.url" value="jdbc:mysql://sql5.freemysqlhosting.net:3306/sql592781?zeroDateTimeBehavior=convertToNull"/>
       <property name="javax.persistence.jdbc.password" value="nL6%mM1%"/>

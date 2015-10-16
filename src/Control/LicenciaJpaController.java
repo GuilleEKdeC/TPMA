@@ -13,7 +13,6 @@ import javax.persistence.Query;
 import javax.persistence.EntityNotFoundException;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
-import Entity.Titular;
 import Entity.Usuario;
 import java.util.ArrayList;
 import java.util.List;
@@ -43,11 +42,6 @@ public class LicenciaJpaController implements Serializable {
         try {
             em = getEntityManager();
             em.getTransaction().begin();
-            Titular idtitularFK = licencia.getIdtitularFK();
-            if (idtitularFK != null) {
-                idtitularFK = em.getReference(idtitularFK.getClass(), idtitularFK.getIdTitular());
-                licencia.setIdtitularFK(idtitularFK);
-            }
             List<Usuario> attachedUsuarioList = new ArrayList<Usuario>();
             for (Usuario usuarioListUsuarioToAttach : licencia.getUsuarioList()) {
                 usuarioListUsuarioToAttach = em.getReference(usuarioListUsuarioToAttach.getClass(), usuarioListUsuarioToAttach.getNombreUsuario());
@@ -55,10 +49,6 @@ public class LicenciaJpaController implements Serializable {
             }
             licencia.setUsuarioList(attachedUsuarioList);
             em.persist(licencia);
-            if (idtitularFK != null) {
-                idtitularFK.getLicenciaList().add(licencia);
-                idtitularFK = em.merge(idtitularFK);
-            }
             for (Usuario usuarioListUsuario : licencia.getUsuarioList()) {
                 usuarioListUsuario.getLicenciaList().add(licencia);
                 usuarioListUsuario = em.merge(usuarioListUsuario);
@@ -77,14 +67,8 @@ public class LicenciaJpaController implements Serializable {
             em = getEntityManager();
             em.getTransaction().begin();
             Licencia persistentLicencia = em.find(Licencia.class, licencia.getIdLicencia());
-            Titular idtitularFKOld = persistentLicencia.getIdtitularFK();
-            Titular idtitularFKNew = licencia.getIdtitularFK();
             List<Usuario> usuarioListOld = persistentLicencia.getUsuarioList();
             List<Usuario> usuarioListNew = licencia.getUsuarioList();
-            if (idtitularFKNew != null) {
-                idtitularFKNew = em.getReference(idtitularFKNew.getClass(), idtitularFKNew.getIdTitular());
-                licencia.setIdtitularFK(idtitularFKNew);
-            }
             List<Usuario> attachedUsuarioListNew = new ArrayList<Usuario>();
             for (Usuario usuarioListNewUsuarioToAttach : usuarioListNew) {
                 usuarioListNewUsuarioToAttach = em.getReference(usuarioListNewUsuarioToAttach.getClass(), usuarioListNewUsuarioToAttach.getNombreUsuario());
@@ -93,14 +77,6 @@ public class LicenciaJpaController implements Serializable {
             usuarioListNew = attachedUsuarioListNew;
             licencia.setUsuarioList(usuarioListNew);
             licencia = em.merge(licencia);
-            if (idtitularFKOld != null && !idtitularFKOld.equals(idtitularFKNew)) {
-                idtitularFKOld.getLicenciaList().remove(licencia);
-                idtitularFKOld = em.merge(idtitularFKOld);
-            }
-            if (idtitularFKNew != null && !idtitularFKNew.equals(idtitularFKOld)) {
-                idtitularFKNew.getLicenciaList().add(licencia);
-                idtitularFKNew = em.merge(idtitularFKNew);
-            }
             for (Usuario usuarioListOldUsuario : usuarioListOld) {
                 if (!usuarioListNew.contains(usuarioListOldUsuario)) {
                     usuarioListOldUsuario.getLicenciaList().remove(licencia);
@@ -141,11 +117,6 @@ public class LicenciaJpaController implements Serializable {
                 licencia.getIdLicencia();
             } catch (EntityNotFoundException enfe) {
                 throw new NonexistentEntityException("The licencia with id " + id + " no longer exists.", enfe);
-            }
-            Titular idtitularFK = licencia.getIdtitularFK();
-            if (idtitularFK != null) {
-                idtitularFK.getLicenciaList().remove(licencia);
-                idtitularFK = em.merge(idtitularFK);
             }
             List<Usuario> usuarioList = licencia.getUsuarioList();
             for (Usuario usuarioListUsuario : usuarioList) {

@@ -1,9 +1,11 @@
 package Logica;
 
+import Control.ClaseJpaController;
 import Control.EntityMan;
 import Control.FactorrhJpaController;
 import Control.GruposanguineoJpaController;
 import Control.TipodocumentoJpaController;
+import Entity.Clase;
 import Entity.Factorrh;
 import Entity.Gruposanguineo;
 import Entity.Tipodocumento;
@@ -18,6 +20,7 @@ public class NomencladorDatosPersonales {
     private List<Tipodocumento> listadoTipoDni;
     private List<Factorrh> listadoFactorRH;
     private List<Gruposanguineo> listadoGrupoSanguineo;
+    private List<Clase> listadoClase;
     
     private static NomencladorDatosPersonales unSingleton=new NomencladorDatosPersonales ();
     private NomencladorDatosPersonales (){
@@ -32,7 +35,7 @@ public class NomencladorDatosPersonales {
           listadoTipoDni=obtenerTipoDni();
           listadoFactorRH=obtenerFactorRH();
           listadoGrupoSanguineo=obtenerGrupoSanguineo();
-     
+          listadoClase=obtenerClase();     
       } 
       
     /*metodos que obtienen los objetos de la BD*/
@@ -61,7 +64,15 @@ public class NomencladorDatosPersonales {
                 }
                 return returno;
      }
-         
+      private List <Clase> obtenerClase(){
+          ClaseJpaController t= new ClaseJpaController(EntityMan.getInstance());
+          List<Clase> returno= new ArrayList<>();
+            for (Clase unTipo:  t.findClaseEntities()){
+                returno.add(unTipo);
+            }
+            return returno;
+      }         
+      
         /*metodos nomencladores de Objetos*/
      public List<Tipodocumento> getObjetosTipoDNI() {
      return listadoTipoDni;}
@@ -69,7 +80,8 @@ public class NomencladorDatosPersonales {
      return listadoFactorRH;}
      public List<Gruposanguineo> getObjetosGrupoSanguineo() {
      return listadoGrupoSanguineo;}
-
+     public List<Clase> getObjetosClase() {
+     return listadoClase;}
      
      
     /*metodos nomencladores de String para COMBOBOX*/
@@ -95,7 +107,13 @@ public class NomencladorDatosPersonales {
                     r.add(unaPos.getGrupo());}
          return r;
     }
+    public List<String> getListadoClase(){
+        List <String> r=new ArrayList();
     
+         for ( Clase unTipo: listadoClase ){
+                    r.add(unTipo.getDescripcion());}
+         return r;
+    }
     //metodos que retornan la instancia del objeto a partir de su string descripcion
     public Tipodocumento getTipoDocumento(String unTipo){
         for( Tipodocumento tipo: listadoTipoDni){
@@ -117,6 +135,14 @@ public class NomencladorDatosPersonales {
         for( Gruposanguineo gs: listadoGrupoSanguineo){
         if(gs.getGrupo().equals(unaNac)){
             return gs;
+        }     
+    }
+    return null;}
+          
+    public Clase getClase(String unaPos){
+        for( Clase pos: listadoClase){
+        if(pos.getDescripcion().equals(unaPos)){
+            return pos;
         }     
     }
     return null;}

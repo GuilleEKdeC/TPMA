@@ -8,9 +8,7 @@ package Entity;
 
 import java.io.Serializable;
 import java.util.Date;
-import java.util.List;
 import javax.persistence.Basic;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -21,12 +19,10 @@ import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -42,8 +38,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Titular.findByApellido", query = "SELECT t FROM Titular t WHERE t.apellido = :apellido"),
     @NamedQuery(name = "Titular.findByNroDocumento", query = "SELECT t FROM Titular t WHERE t.nroDocumento = :nroDocumento"),
     @NamedQuery(name = "Titular.findByFechaNacimiento", query = "SELECT t FROM Titular t WHERE t.fechaNacimiento = :fechaNacimiento"),
-    @NamedQuery(name = "Titular.findByDonante", query = "SELECT t FROM Titular t WHERE t.donante = :donante"),
-    @NamedQuery(name = "Titular.findByClaseSolicitada", query = "SELECT t FROM Titular t WHERE t.claseSolicitada = :claseSolicitada")})
+    @NamedQuery(name = "Titular.findByDonante", query = "SELECT t FROM Titular t WHERE t.donante = :donante")})
 public class Titular implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
@@ -70,11 +65,9 @@ public class Titular implements Serializable {
     @Basic(optional = false)
     @Column(name = "donante")
     private boolean donante;
-    @Basic(optional = false)
-    @Column(name = "claseSolicitada")
-    private String claseSolicitada;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idtitularFK")
-    private List<Licencia> licenciaList;
+    @JoinColumn(name = "tipoDocumento_FK", referencedColumnName = "idTipoDocumento")
+    @ManyToOne
+    private Tipodocumento tipoDocumentoFK;
     @JoinColumn(name = "direccion_FK", referencedColumnName = "idDireccion")
     @ManyToOne(optional = false)
     private Direccion direccionFK;
@@ -84,9 +77,9 @@ public class Titular implements Serializable {
     @JoinColumn(name = "grupoSanguineo_FK", referencedColumnName = "idGrupo")
     @ManyToOne
     private Gruposanguineo grupoSanguineoFK;
-    @JoinColumn(name = "tipoDocumento_FK", referencedColumnName = "idTipoDocumento")
-    @ManyToOne
-    private Tipodocumento tipoDocumentoFK;
+    @JoinColumn(name = "claseSolicitada", referencedColumnName = "idClaseSolicitada")
+    @ManyToOne(optional = false)
+    private Clase claseSolicitada;
 
     public Titular() {
     }
@@ -95,14 +88,13 @@ public class Titular implements Serializable {
         this.idTitular = idTitular;
     }
 
-    public Titular(Integer idTitular, String nombre, String apellido, int nroDocumento, Date fechaNacimiento, boolean donante, String claseSolicitada) {
+    public Titular(Integer idTitular, String nombre, String apellido, int nroDocumento, Date fechaNacimiento, boolean donante) {
         this.idTitular = idTitular;
         this.nombre = nombre;
         this.apellido = apellido;
         this.nroDocumento = nroDocumento;
         this.fechaNacimiento = fechaNacimiento;
         this.donante = donante;
-        this.claseSolicitada = claseSolicitada;
     }
 
     public Integer getIdTitular() {
@@ -161,21 +153,12 @@ public class Titular implements Serializable {
         this.donante = donante;
     }
 
-    public String getClaseSolicitada() {
-        return claseSolicitada;
+    public Tipodocumento getTipoDocumentoFK() {
+        return tipoDocumentoFK;
     }
 
-    public void setClaseSolicitada(String claseSolicitada) {
-        this.claseSolicitada = claseSolicitada;
-    }
-
-    @XmlTransient
-    public List<Licencia> getLicenciaList() {
-        return licenciaList;
-    }
-
-    public void setLicenciaList(List<Licencia> licenciaList) {
-        this.licenciaList = licenciaList;
+    public void setTipoDocumentoFK(Tipodocumento tipoDocumentoFK) {
+        this.tipoDocumentoFK = tipoDocumentoFK;
     }
 
     public Direccion getDireccionFK() {
@@ -202,12 +185,12 @@ public class Titular implements Serializable {
         this.grupoSanguineoFK = grupoSanguineoFK;
     }
 
-    public Tipodocumento getTipoDocumentoFK() {
-        return tipoDocumentoFK;
+    public Clase getClaseSolicitada() {
+        return claseSolicitada;
     }
 
-    public void setTipoDocumentoFK(Tipodocumento tipoDocumentoFK) {
-        this.tipoDocumentoFK = tipoDocumentoFK;
+    public void setClaseSolicitada(Clase claseSolicitada) {
+        this.claseSolicitada = claseSolicitada;
     }
 
     @Override
