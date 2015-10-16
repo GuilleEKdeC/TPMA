@@ -5,8 +5,10 @@
  */
 package Interfaz;
 
+import Control.EntityMan;
 import java.awt.Image;
 import java.awt.Label;
+import javax.persistence.EntityManagerFactory;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
@@ -22,6 +24,7 @@ public class MenuPrincipal extends javax.swing.JFrame {
      * Creates new form MenuPrincipal
      */
     public MenuPrincipal() {
+        EntityManagerFactory instance = EntityMan.getInstance();
         initComponents();
         crearImagen(lbImagen1,"src/Imagenes/usuario-registrado.png",167,150);
         crearImagen(lbImagen2,"src/Imagenes/licencia.jpg",147,150);
