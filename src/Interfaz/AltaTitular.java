@@ -362,12 +362,14 @@ public class AltaTitular extends javax.swing.JFrame {
         String piso = txtPiso.getText();
         
         gestorTitular.darAltaTitular(nombre, apellido, fecha, nroDoc, calle, dpto, nroCalle, piso,(String) cmbClaseSolicitada.getSelectedItem(), cmbDonante.getSelectedIndex(),(String) cmbFactorRH.getSelectedItem(),(String) cmbGrupoSanguineo.getSelectedItem(),(String) cmbTipoDocumento.getSelectedItem());
-          
+        MenuPrincipalTitulares mpt = new MenuPrincipalTitulares();
+        mpt.setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_btnAceptarActionPerformed
 
     private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
-        MenuPrincipal mp = new MenuPrincipal();
-        mp.setVisible(true);
+        MenuPrincipalTitulares mpt = new MenuPrincipalTitulares();
+        mpt.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnCancelarActionPerformed
 

@@ -26,10 +26,10 @@ public class MenuPrincipal extends javax.swing.JFrame {
     public MenuPrincipal() {
         EntityManagerFactory instance = EntityMan.getInstance();
         initComponents();
-        crearImagen(lbImagen1,"src/Imagenes/usuario-registrado.png",167,150);
-        crearImagen(lbImagen2,"src/Imagenes/licencia.jpg",147,150);
-        crearImagen(lbImagen3,"src/Imagenes/imprimir.jpg",147,150);        
-        crearImagen(lbImagen4,"src/Imagenes/salir.jpg",147,150);
+        crearImagen(lbImagen1,"src/Imagenes/usuario-registrado.png",170,150);
+        crearImagen(lbImagen2,"src/Imagenes/licencia.jpg",160,150);
+        crearImagen(lbImagen3,"src/Imagenes/imprimir.jpg",160,150);        
+        crearImagen(lbImagen4,"src/Imagenes/salir.jpg",160,150);
     }
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -44,7 +44,7 @@ public class MenuPrincipal extends javax.swing.JFrame {
         lbImagen3 = new javax.swing.JLabel();
         lbImagen4 = new javax.swing.JLabel();
         lbTitulo = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
+        btnVolverComoSolicitante = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("¡Bienvenidos!");
@@ -53,7 +53,7 @@ public class MenuPrincipal extends javax.swing.JFrame {
         setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         setForeground(java.awt.Color.white);
 
-        btnDarAltaUsuario.setText("Dar Alta de Usuario");
+        btnDarAltaUsuario.setText("Dar Alta a un Usuario");
         btnDarAltaUsuario.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnDarAltaUsuarioActionPerformed(evt);
@@ -95,10 +95,10 @@ public class MenuPrincipal extends javax.swing.JFrame {
         lbTitulo.setFont(new java.awt.Font("Sitka Small", 3, 14)); // NOI18N
         lbTitulo.setText("Secretaría de Trasporte - Municipalidad de Santa Fe");
 
-        jButton1.setText("jButton1");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        btnVolverComoSolicitante.setText("Volver al sistema para Solicitantes");
+        btnVolverComoSolicitante.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                btnVolverComoSolicitanteActionPerformed(evt);
             }
         });
 
@@ -110,33 +110,31 @@ public class MenuPrincipal extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(lbImagen1, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(lbImagen2, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(lbImagen1, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(26, 26, 26)
+                                .addComponent(lbImagen2, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addComponent(btnDarAltaUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(10, 10, 10)
-                                .addComponent(btnEmitirLicencia, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(btnDarAltaUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(btnEmitirLicencia, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(26, 26, 26)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(lbImagen3, javax.swing.GroupLayout.DEFAULT_SIZE, 150, Short.MAX_VALUE)
-                            .addComponent(btnImprimirLicencia, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                            .addComponent(lbImagen3, javax.swing.GroupLayout.DEFAULT_SIZE, 160, Short.MAX_VALUE)
+                            .addComponent(btnImprimirLicencia, javax.swing.GroupLayout.DEFAULT_SIZE, 160, Short.MAX_VALUE))
+                        .addGap(26, 26, 26)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(lbImagen4, javax.swing.GroupLayout.DEFAULT_SIZE, 150, Short.MAX_VALUE)
-                            .addComponent(btnSalir, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addContainerGap(24, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addComponent(lbTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, 396, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(130, 130, 130))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addComponent(jButton1)
-                                .addGap(290, 290, 290))))))
+                            .addComponent(lbImagen4, javax.swing.GroupLayout.DEFAULT_SIZE, 160, Short.MAX_VALUE)
+                            .addComponent(btnSalir, javax.swing.GroupLayout.DEFAULT_SIZE, 160, Short.MAX_VALUE)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(186, 186, 186)
+                        .addComponent(lbTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, 396, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(btnVolverComoSolicitante)
+                .addGap(265, 265, 265))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -153,19 +151,21 @@ public class MenuPrincipal extends javax.swing.JFrame {
                     .addComponent(btnEmitirLicencia)
                     .addComponent(btnImprimirLicencia)
                     .addComponent(btnSalir))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 19, Short.MAX_VALUE)
-                .addComponent(jButton1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(lbTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnVolverComoSolicitante)
+                .addGap(14, 14, 14))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnDarAltaUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDarAltaUsuarioActionPerformed
-        PermisoAdministrador pa = new PermisoAdministrador();
-        pa.setVisible(true);
+       // AltaTitular at = new AltaTitular();
+        //at.setVisible(true);
+        AltaUsuario au = new AltaUsuario();
+        au.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnDarAltaUsuarioActionPerformed
 
@@ -184,10 +184,12 @@ public class MenuPrincipal extends javax.swing.JFrame {
         //this.dispose();
     }//GEN-LAST:event_btnSalirActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        AltaTitular intAltaTitular = new AltaTitular();
-        intAltaTitular.setVisible(true);
-    }//GEN-LAST:event_jButton1ActionPerformed
+    private void btnVolverComoSolicitanteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVolverComoSolicitanteActionPerformed
+        //AltaTitular intAltaTitular = new AltaTitular();
+        MenuPrincipalTitulares mpt = new MenuPrincipalTitulares();
+        mpt.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_btnVolverComoSolicitanteActionPerformed
 
     /**
      * @param args the command line arguments
@@ -229,7 +231,7 @@ public class MenuPrincipal extends javax.swing.JFrame {
     private javax.swing.JButton btnEmitirLicencia;
     private javax.swing.JButton btnImprimirLicencia;
     private javax.swing.JButton btnSalir;
-    private javax.swing.JButton jButton1;
+    private javax.swing.JButton btnVolverComoSolicitante;
     private javax.swing.JLabel lbImagen1;
     private javax.swing.JLabel lbImagen2;
     private javax.swing.JLabel lbImagen3;
@@ -246,3 +248,4 @@ public class MenuPrincipal extends javax.swing.JFrame {
         lblLabel.getBorder();}
 
     }
+

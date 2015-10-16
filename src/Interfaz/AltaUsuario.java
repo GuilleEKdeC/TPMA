@@ -199,6 +199,9 @@ public class AltaUsuario extends javax.swing.JFrame {
         } catch (Exception ex) {
             Logger.getLogger(AltaUsuario.class.getName()).log(Level.SEVERE, null, ex);
         }
+        MenuPrincipal mp = new MenuPrincipal();
+        mp.setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_btnAceptarActionPerformed
 
     private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed

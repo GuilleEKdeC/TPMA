@@ -128,16 +128,16 @@ public class PermisoAdministrador extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnAtrasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAtrasActionPerformed
-        MenuPrincipal mp = new MenuPrincipal();
-        mp.setVisible(true);
+        MenuPrincipalTitulares mpt = new MenuPrincipalTitulares();
+        mpt.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnAtrasActionPerformed
 
     private void btnIngresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIngresarActionPerformed
         /*ACA VA EL CODIGO DE BUSCAR EN LA BASE DE DATOS EL USUARIO ADMINISTRADOR 
         Y VERIFICAR SI ES CORRECTO O NO. SI ES CORRECTO DEBE PERMITIR CREAR UN USUARIO NUEVO*/
-        AltaUsuario au = new AltaUsuario();
-        au.setVisible(true);
+        MenuPrincipal mp = new MenuPrincipal();
+        mp.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnIngresarActionPerformed
 
