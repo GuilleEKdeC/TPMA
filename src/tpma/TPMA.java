@@ -25,14 +25,13 @@ public class TPMA {
         MenuPrincipalTitulares mp = new MenuPrincipalTitulares();
         mp.setVisible(true);
         
-        SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
+       /* SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
         
         GestorLicencias gl = new GestorLicencias();
-        Calendar x = gl.calcularVigencia("10-09-1993");
+        Calendar x = gl.calcularVigencia("10-01-1995");
         
         String formatted = format.format(x.getTime());
-        
-        System.out.println("Su fecha de caducidad es: "+formatted);
+        System.out.println("Su fecha de caducidad es: "+formatted);*/
     }
     
 }

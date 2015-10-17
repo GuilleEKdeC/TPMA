@@ -38,17 +38,24 @@ public class GestorLicencias {
         Calendar fechaActual = Calendar.getInstance(); //creamos un objeto con la fecha actual
         
         fechaNacimiento.setTime(fechaNac);
+        
         int año = fechaActual.get(Calendar.YEAR)- fechaNacimiento.get(Calendar.YEAR);
         int mes =fechaActual.get(Calendar.MONTH)- fechaNacimiento.get(Calendar.MONTH);
         int dia = fechaActual.get(Calendar.DATE)- fechaNacimiento.get(Calendar.DATE);        
         //Se ajusta el año dependiendo el mes y el día
         if(mes<0 || (mes==0 && dia<0)){
+            año--;
+        }
+        
+        if(mes>= -2 && mes<0){ //si hay una diferencia de 3 meses se toma un año mas, el año del titular no es su edad exacta, sino el año con los que renovará su licencia
             año++;
         }
         
-        if(mes <= 3){ //si hay una diferencia en meses se toma un año mas, el año del titular no es su edad exacta, sino el año con los que renovará su licencia
+        if(mes>=9 && mes<=11){
             año++;
         }
+            
+            
         //Regresa la edad en base a la fecha de nacimiento + 1 año en el caso de que este cerca de su fecha de nacimiento y desea renovar licencia
         return año;
     } 
@@ -58,19 +65,19 @@ public class GestorLicencias {
         if(edadTitular <17){
             return 0;
         }
-        else if(edadTitular>=17 && edadTitular < 21){
+        if(edadTitular>=17 && edadTitular < 21){
             return 1;
         }
-        else if(edadTitular >=21 && edadTitular<46){
+        if(edadTitular >=21 && edadTitular<46){
             return 5;
         }
-        else if(edadTitular>=46 && edadTitular<60){
+        if(edadTitular>=46 && edadTitular<60){
             return 4;
         }
-        else if(edadTitular>=61 && edadTitular<70){
+        if(edadTitular>=61 && edadTitular<70){
             return 3;
         }
-        else if(edadTitular>=71){
+        if(edadTitular>=71){
             return 1;
         }   
         return 0;
@@ -88,7 +95,7 @@ public class GestorLicencias {
         Calendar fechaVigencia = Calendar.getInstance();
         
         fechaVigencia.setTime(fechaVigenciaLicencia);
-        fechaVigencia.add(Calendar.YEAR,(aniosLicencia + edadTitularLicencia - 1));
+        fechaVigencia.add(Calendar.YEAR,(aniosLicencia + edadTitularLicencia));
         
         return fechaVigencia;
         
